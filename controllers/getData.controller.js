@@ -9,9 +9,9 @@ data.post("/:username", async (req, res) => {
         const response = await fetch(`https://api.github.com/users/${username}`)
         const user = await response.json()
 
-        if(!user.login){
+        if (!user.login) {
             res.status(400).json({
-                msg : "Github user does not exist"
+                msg: "Github user does not exist"
             })
             return
         }
@@ -26,7 +26,7 @@ data.post("/:username", async (req, res) => {
                 user.name,
                 user.location,
                 user.public_repos,
-                user.followers ]
+                user.followers]
         )
         res.status(200).json({
             msg: "data added succesfully",
@@ -40,35 +40,35 @@ data.post("/:username", async (req, res) => {
 })
 
 data.get("/all", async (req, res) => {
-    const connection = await dbConnection()
-try {
-    const [info] = await connection.query(`
+    try {
+        const connection = await dbConnection()
+        const [info] = await connection.query(`
         SELECT * FROM users`)
-    res.status(200).json({
-        data: info
-    })
-}catch(err){
-    console.error(err)
+        res.status(200).json({
+            data: info
+        })
+    } catch (err) {
+        console.error(err)
         res.status(500).json({
             msg: "Internal Server Error",
         })
-}
+    }
 })
 
 data.get("/:username", async (req, res) => {
     const username = req.params.username
-    const connection = await dbConnection()
-try {
-    const [info] = await connection.query(`
-        SELECT * FROM users WHERE username = ?`,[username])
-    res.status(200).json({
-        data: info
-    })
-}catch(err){
-    console.error(err)
+    try {
+        const connection = await dbConnection()
+        const [info] = await connection.query(`
+        SELECT * FROM users WHERE username = ?`, [username])
+        res.status(200).json({
+            data: info
+        })
+    } catch (err) {
+        console.error(err)
         res.status(500).json({
             msg: "Internal Server Error",
         })
-}
+    }
 })
 module.exports = data
