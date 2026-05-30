@@ -1,3 +1,4 @@
+dotenv.config()
 const express = require("express")
 const dotenv = require("dotenv")
 
@@ -7,7 +8,6 @@ const repos = require("./controllers/getRepos.controller")
 
 const app = express()
 app.use(express.json())
-dotenv.config()
 
 
 app.use("/user", data)
