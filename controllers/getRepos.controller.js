@@ -30,7 +30,6 @@ repos.post("/:username/repos", async (req, res) => {
         const repoCount = repos.length
         res.json({
             repoCount: repoCount,
-            repos: reposData
         })
     } catch (err) {
         console.error(err)
@@ -48,7 +47,7 @@ repos.get("/:username/repos", async (req, res) => {
         SELECT * FROM repos WHERE owner_id = (SELECT id FROM users WHERE username = ?)` , [username])
 
         res.status(200).json({
-            msg: "Repos added succesfully"
+            msg: repos
         })
     } catch (err) {
         console.error(err)
