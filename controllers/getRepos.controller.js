@@ -48,7 +48,7 @@ try {
         SELECT * FROM repos WHERE owner_id = (SELECT id FROM users WHERE username = ?)` , [username])
 
     res.status(200).json({
-        data: repos
+        msg: "Repos added succesfully"
     })
 }catch(err){
     console.error(err)
