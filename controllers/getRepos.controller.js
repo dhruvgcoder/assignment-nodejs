@@ -2,6 +2,7 @@ const { Router } = require("express")
 const repos = Router()
 const dbConnection = require("../db/connection")
 
+
 repos.post("/:username/repos", async (req, res) => {
 
     const username = req.params.username
@@ -42,13 +43,19 @@ try {
 repos.get("/:username/repos", async (req, res) => {
     const username = req.params.username
     const connection = await dbConnection()
-
+try {
     const [repos] = await connection.query(`
         SELECT * FROM repos WHERE owner_id = (SELECT id FROM users WHERE username = ?)` , [username])
 
     res.status(200).json({
-        data: [repos]
+        data: repos
     })
+}catch(err){
+    console.error(err)
+        res.status(500).json({
+            msg: "Internal Server Error",
+        })
+}
 })
 
 module.exports = repos
